@@ -27,6 +27,8 @@ const UserSurvey = ({ survey, answerPreview }) => {
   }
 
   return (
+    <>
+    <h1>{survey.name}</h1>
     <div className="UserSurvey">
       <Formik 
         initialValues={determineInitialFormState()}
@@ -34,10 +36,10 @@ const UserSurvey = ({ survey, answerPreview }) => {
         >
         {({ values }) => (
           <Form
-            className="questions"
-            onChange={
-              setAnswers(values)
-            }
+          className="questions"
+          onChange={
+            setAnswers(values)
+          }
           >
             {renderQuestions()}
             <button type="submit">Submit</button>
@@ -46,11 +48,12 @@ const UserSurvey = ({ survey, answerPreview }) => {
       </Formik>
       {answerPreview &&
         <ParagraphPreview 
-          madlib={survey.madlib} 
-          answers={answers} 
+        madlib={survey.madlib} 
+        answers={answers} 
         />
       }
     </div>
+      </>
   )
 }
 
