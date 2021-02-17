@@ -1,6 +1,6 @@
 import { Field } from 'formik'
 
-const Question = ({ question}) => {
+const Question = ({ question, changeFn }) => {
   const questionName = `question-${question.num}`
 
   const printAnswerOptions = () => {
@@ -19,12 +19,17 @@ const Question = ({ question}) => {
       field = <Field 
                 name={questionName} 
                 as="select"
+                onChange={(value) => changeFn(value)}
                 > 
                 {printAnswerOptions()}
               </Field> 
 
     } else if (question.answerType === 'textarea') {
-      field = <Field name={questionName} type="text"/>
+      field = <Field 
+        name={questionName} 
+        type="text"
+        onChange={(value) => changeFn(value)}
+        />
     }
     return (
       <>
