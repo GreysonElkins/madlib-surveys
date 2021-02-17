@@ -5,18 +5,17 @@ const UserSurvey = ({ survey }) => {
   
   const determineInitialFormState = () => {
     const state = {}
-    for (let i=0; i < survey.questions.length; i++) {
-      state[`question-${i}`] = ''
-    }
+    survey.questions.forEach(question => {
+      state[`question-${question.num}`] = ''
+    })
     return state
   }
   
   const renderQuestions = () => {
-    return survey.questions.map((question, i) => (
+    return survey.questions.map((question) => (
       <Question 
         question={question} 
-        questionNumber={i}
-        key={`Question-${i}`}
+        key={`Question-${question.num}`}
       />
     ))
   }

@@ -6,7 +6,7 @@ import useCase from './example-survey'
 const App = () => {
   return (
     <div className="App">
-      <UserSurvey survey={useCase}/>
+      <UserSurvey survey={useCase} answerPreview={true}/>
     </div>
   );
 }
