@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import Question from '../Question'
 import ParagraphPreview from '../ParagraphPreview'
 
+import './UserSurvey.css'
+
 const UserSurvey = ({ survey, answerPreview }) => {
   const [answers, setAnswers] = useState(determineInitialFormState())
 
@@ -25,13 +27,14 @@ const UserSurvey = ({ survey, answerPreview }) => {
   }
 
   return (
-    <>
+    <div className="UserSurvey">
       <Formik 
         initialValues={determineInitialFormState()}
         onSubmit={(values) => console.log(values)}
         >
         {({ values }) => (
           <Form
+            className="questions"
             onChange={
               setAnswers(values)
             }
@@ -47,7 +50,7 @@ const UserSurvey = ({ survey, answerPreview }) => {
           answers={answers} 
         />
       }
-    </>
+    </div>
   )
 }
 

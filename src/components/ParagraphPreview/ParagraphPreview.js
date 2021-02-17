@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 
+import './ParagraphPreview.css'
+
 const ParagraphPreview = ({ madlib, answers }) => {
   const [inputs, setInputs] = useState({})
 
@@ -24,7 +26,7 @@ const ParagraphPreview = ({ madlib, answers }) => {
     setInputs(answers)
   }, [answers, setInputs])
 
-  return <div>{printParagraph()}</div>
+  return <div className="ParagraphPreview">{printParagraph()}</div>
 }
 
 export default ParagraphPreview

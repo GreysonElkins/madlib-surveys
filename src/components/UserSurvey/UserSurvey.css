@@ -1,0 +1,19 @@
+.UserSurvey, .questions {
+  display: flex;
+  justify-content: center;
+}
+
+.UserSurvey {
+  padding: 5em;
+  width: 80%;
+}
+
+.questions {
+  flex-direction: column;
+  width: 60%;
+  margin: 0 4em;
+}
+
+.questions > * {
+  margin: .2em;
+}
