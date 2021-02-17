@@ -5,9 +5,9 @@ const UserSurvey = ({ survey }) => {
   
   const determineInitialFormState = () => {
     const state = {}
-    survey.questions.forEach((question, i) => {
-      state[`${question}-${i}`] = ''
-    })
+    for (let i=0; i < survey.questions.length; i++) {
+      state[`question-${i}`] = ''
+    }
     return state
   }
   
@@ -16,7 +16,6 @@ const UserSurvey = ({ survey }) => {
       <Question 
         question={question} 
         questionNumber={i}
-        submitFn={() => {}}
         key={`Question-${i}`}
       />
     ))
@@ -24,7 +23,8 @@ const UserSurvey = ({ survey }) => {
 
   return (
     <Formik 
-      initialState={() => determineInitialFormState()}
+      initialValues={determineInitialFormState()}
+      onSubmit={(values) => console.log(values)}
     >
       <Form>
         {renderQuestions()}
