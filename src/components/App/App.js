@@ -3,7 +3,7 @@ import './App.css';
 import UserSurvey from '../UserSurvey'
 import useCase from './example-survey'
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <UserSurvey survey={useCase}/>
