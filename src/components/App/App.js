@@ -1,9 +1,12 @@
 // import logo from './logo.svg';
 import './App.css';
+import UserSurvey from '../UserSurvey'
+import useCase from './example-survey'
 
 function App() {
   return (
     <div className="App">
+      <UserSurvey survey={useCase}/>
     </div>
   );
 }

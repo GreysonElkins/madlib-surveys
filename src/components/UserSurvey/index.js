@@ -1,1 +1,1 @@
-default export {UserSurvey} from './UserSurvey'
+export { default } from './UserSurvey' 
