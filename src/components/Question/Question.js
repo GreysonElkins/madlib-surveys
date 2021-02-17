@@ -19,7 +19,6 @@ const Question = ({ question, changeFn }) => {
       field = <Field 
                 name={questionName} 
                 as="select"
-                onChange={(value) => changeFn(value)}
                 > 
                 {printAnswerOptions()}
               </Field> 
@@ -28,7 +27,6 @@ const Question = ({ question, changeFn }) => {
       field = <Field 
         name={questionName} 
         type="text"
-        onChange={(value) => changeFn(value)}
         />
     }
     return (

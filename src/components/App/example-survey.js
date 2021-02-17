@@ -1,4 +1,5 @@
 const useCase = {
+  name: "Use Cases",
   questions: [
     {
       num: 1,
@@ -28,7 +29,6 @@ const useCase = {
       answerType: "textarea"
     }
   ],
-  // answers: [],
   madlib: [1, `at`, 2, `use`, 3, `when`, 4, `in order to`, 5]
 }
 
