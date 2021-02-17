@@ -1,4 +1,4 @@
-import { Formik, Field, Form } from 'formik'
+import { Field } from 'formik'
 
 const Question = ({ question, questionNumber}) => {
   const questionTitle = `question-${questionNumber}`
@@ -11,17 +11,31 @@ const Question = ({ question, questionNumber}) => {
     return [defaultOption, ...options]
   }
 
-  return (
-    <>
-    <label htmlFor={questionTitle}>{question.question}</label>
-      <Field 
-        name={questionTitle} 
-        as={question.answerType}
-      > 
-        {question.answerType === 'select' ? printAnswerOptions() : ''}
-      </Field> 
-    </>
-  )
+  const determineField = () => {
+    let field;
+    if (question.answerType === 'select') {
+    // ^ I've been getting curious about enums, 
+    // I think this would be a great use case 
+      field = <Field 
+                name={questionTitle} 
+                as="select"
+                > 
+                {printAnswerOptions()}
+              </Field> 
+
+    } else if (question.answerType === 'textarea') {
+      field = <Field name={questionTitle} type="text"/>
+    }
+    return (
+      <>
+        <label htmlFor={questionTitle}>{question.question}</label>
+        {field}
+      </>
+    )
+  }
+
+  return determineField()
 }
+
 
 export default Question
