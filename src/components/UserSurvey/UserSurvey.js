@@ -1,8 +1,9 @@
 import { Formik, Form } from 'formik'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import Question from '../Question'
 import ParagraphPreview from '../ParagraphPreview'
+import SurveyResponses from '../SurveyResponses'
 
 import './UserSurvey.css'
 
@@ -28,7 +29,7 @@ const UserSurvey = ({ survey, answerPreview }) => {
 
   const updateStoredResponses = () => {
     const responses = findStoredResponses()
-    responses.push(answers)
+    responses.push({survey: answers, madlib: survey.madlib})
     localStorage.setItem('responses', JSON.stringify(responses));
   }
   
@@ -37,13 +38,20 @@ const UserSurvey = ({ survey, answerPreview }) => {
     return responses ? responses : [];
   }
 
+  const checkForResponses = () => {
+    return localStorage.getItem('responses') ? true : false
+  }
+
   return (
     <>
     <h1>{survey.name}</h1>
     <div className="UserSurvey">
       <Formik 
         initialValues={determineInitialFormState()}
-        onSubmit={() => updateStoredResponses()}
+        onSubmit={(values, { resetForm }) => {
+          updateStoredResponses()
+          resetForm()
+        }}
         >
         {({ values }) => (
           <Form
@@ -57,13 +65,15 @@ const UserSurvey = ({ survey, answerPreview }) => {
           </Form>
         )}
       </Formik>
-      {answerPreview &&
-        <ParagraphPreview 
+      <ParagraphPreview 
         madlib={survey.madlib} 
         answers={answers} 
-        />
-      }
+      />
     </div>
+      {checkForResponses() &&
+        // gotta rerender this on submit
+        <SurveyResponses />
+      }
       </>
   )
 }
