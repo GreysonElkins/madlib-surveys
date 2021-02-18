@@ -1,5 +1,5 @@
 import { Formik, Form } from 'formik'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Question from '../Question'
 import ParagraphPreview from '../ParagraphPreview'
@@ -34,6 +34,14 @@ const UserSurvey = ({ survey, answerPreview }) => {
   //   ))
   }
 
+  useEffect(() => {
+    if (currentQuestion === survey.questions.length) {
+      document.getElementById('survey-submit').classList.remove('hidden')
+    } else {
+      document.getElementById('survey-submit').classList.add('hidden')
+    }
+  }, [currentQuestion])
+
   const updateStoredResponses = () => {
     const responses = findStoredResponses()
     responses.unshift({survey: answers, madlib: survey.madlib})
@@ -54,6 +62,15 @@ const UserSurvey = ({ survey, answerPreview }) => {
     setCurrentQuestion(nextQuestion)
   }
 
+  const onSubmit = (values, { resetForm }) => {
+    // setting answers here seemed to happen before values updated onSubmit
+    updateStoredResponses()
+    setCurrentQuestion(1)
+    alert('Thanks for taking the survey! Your response has been stored')
+    // ^ not a fan of this `alert`, but it'll do for now
+    resetForm()
+  }
+
   return (
     <>
     <h1>{survey.name}</h1>
@@ -62,17 +79,15 @@ const UserSurvey = ({ survey, answerPreview }) => {
       <Formik 
         initialValues={determineInitialFormState()}
         validationSchema={survey.validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          updateStoredResponses()
-          resetForm()
-        }}
-        >
-        {({ values, errors, touched, validateForm, setFieldError, setTouched, setErrors }) => (
+        onSubmit={onSubmit}
+      >
+        {({ values, errors, touched, validateForm, setFieldError, setTouched, setErrors, handleSubmit }) => (
           <Form
           className="questions"
+          onSubmit={handleSubmit}
           >
             {renderQuestions(errors, touched)}
-            {/* I would love to move these into their own function, 
+            {/* I would love to move the question buttons into it's own function, 
               but I'm suspicious of passing them Formik bag methods without their corresponding "state" values,
               so I'm leaving it for now to work on some other things.
             */}
@@ -89,25 +104,34 @@ const UserSurvey = ({ survey, answerPreview }) => {
                   Previous
                 </button>
               }
-              {currentQuestion === survey.questions.length ? 
                 <button 
                   type="submit"
-                  className="cta-1"
+                  id="survey-submit"
+                  className={"cta-1 hidden"} 
+                  // I wouldn't have done it this way with class names, but conditionally rendering the submit button triggered on submit when it rendered.
+                  onClick={() => {setAnswers(values)}}
+                  // ^ earlier I didn't need this... I feel like this sort of logic misses the point of Formik
+                  // then when I started doing more in onSubmit, 
                 >
                   Submit
-                </button> :
+                </button> 
+              {currentQuestion !== survey.questions.length && 
                 <button 
                   className="cta-2"
                   type="button" 
                   onClick={() => {
                     setTouched({[`question-${currentQuestion}`]: true})
+                    //I would have preferred validateField here, but it doesn't have a return and didn't seem to be affecting `errors` 
                     validateForm().then(result => {
                       if (!result[`question-${currentQuestion}`]) {
                         goToNextQuestion()
                         setAnswers(values)
                         setErrors({})
                       } else {
-                        setFieldError({field: `question-${currentQuestion}`, errorMsg: result[`question-${currentQuestion}`]})
+                        setFieldError({
+                          field: `question-${currentQuestion}`, 
+                          errorMsg: result[`question-${currentQuestion}`]
+                        })
                       }
                     })
                   }}

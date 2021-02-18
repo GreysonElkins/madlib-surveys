@@ -16,3 +16,7 @@ label {
   border-radius: 5px;
   border: black solid 1px;
 }
+
+.hidden {
+  display: none;
+}
