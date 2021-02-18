@@ -26,13 +26,24 @@ const UserSurvey = ({ survey, answerPreview }) => {
     ))
   }
 
+  const updateStoredResponses = () => {
+    const responses = findStoredResponses()
+    responses.push(answers)
+    localStorage.setItem('responses', JSON.stringify(responses));
+  }
+  
+  const findStoredResponses = () => {
+    let responses = JSON.parse(localStorage.getItem('responses'))
+    return responses ? responses : [];
+  }
+
   return (
     <>
     <h1>{survey.name}</h1>
     <div className="UserSurvey">
       <Formik 
         initialValues={determineInitialFormState()}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={() => updateStoredResponses()}
         >
         {({ values }) => (
           <Form
