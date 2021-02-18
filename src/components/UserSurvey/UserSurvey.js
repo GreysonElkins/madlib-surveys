@@ -7,7 +7,7 @@ import SurveyResponses from '../SurveyResponses'
 
 import './UserSurvey.css'
 
-const UserSurvey = ({ survey, answerPreview }) => {
+const UserSurvey = ({ survey }) => {
   const [answers, setAnswers] = useState(determineInitialFormState())
   const [currentQuestion, setCurrentQuestion] = useState(1)
 
@@ -21,8 +21,6 @@ const UserSurvey = ({ survey, answerPreview }) => {
 
   const renderQuestions = (errors, touched) => {
     const question = survey.questions[currentQuestion - 1]
-    // {
-    //   return survey.questions.map((question) => (
       return (
         <Question 
           question={question} 
@@ -31,7 +29,6 @@ const UserSurvey = ({ survey, answerPreview }) => {
           touched={touched}
         />
       )
-  //   ))
   }
 
   useEffect(() => {
@@ -63,7 +60,7 @@ const UserSurvey = ({ survey, answerPreview }) => {
   }
 
   const onSubmit = (values, { resetForm }) => {
-    // setting answers here seemed to happen before values updated onSubmit
+    // setting `answers` here seemed to happen before Form `values` updated
     updateStoredResponses()
     setCurrentQuestion(1)
     alert('Thanks for taking the survey! Your response has been stored')
@@ -86,12 +83,14 @@ const UserSurvey = ({ survey, answerPreview }) => {
           <Form
           className="questions"
           onSubmit={handleSubmit}
-            // I need to review this, you'll find on the other branch that I forgot about this later...
+            // I need to review the handleSubmit method, you'll find on the other branch that I forgot about it come morning...
           >
             {renderQuestions(errors, touched)}
             {/* I would love to move the question buttons into it's own function, 
               but I'm suspicious of passing them Formik bag methods without their corresponding "state" values,
               so I'm leaving it for now to work on some other things.
+
+              on the other branch, I was able to `useFormikContext` to pull this off
             */}
             <div className="question-buttons">
               {currentQuestion > 1 && 
@@ -113,7 +112,6 @@ const UserSurvey = ({ survey, answerPreview }) => {
                   // I wouldn't have done it this way with class names, but conditionally rendering the submit button triggered on submit when it rendered.
                   onClick={() => {setAnswers(values)}}
                   // ^ earlier I didn't need this... I feel like this sort of logic misses the point of Formik
-                  // then when I started doing more in onSubmit, 
                 >
                   Submit
                 </button> 
