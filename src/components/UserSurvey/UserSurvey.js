@@ -40,7 +40,7 @@ const UserSurvey = ({ survey, answerPreview }) => {
     } else {
       document.getElementById('survey-submit').classList.add('hidden')
     }
-  }, [currentQuestion])
+  }, [currentQuestion, survey.questions.length])
 
   const updateStoredResponses = () => {
     const responses = findStoredResponses()
@@ -69,6 +69,7 @@ const UserSurvey = ({ survey, answerPreview }) => {
     alert('Thanks for taking the survey! Your response has been stored')
     // ^ not a fan of this `alert`, but it'll do for now
     resetForm()
+    setAnswers(determineInitialFormState())
   }
 
   return (
