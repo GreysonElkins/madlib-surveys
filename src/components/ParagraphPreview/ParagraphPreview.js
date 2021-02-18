@@ -20,8 +20,6 @@ const ParagraphPreview = ({ madlib, answers }) => {
     })
   } 
 
-
-
   useEffect(() => {
     setInputs(answers)
   }, [answers, setInputs])
