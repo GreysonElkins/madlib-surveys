@@ -1,5 +1,15 @@
+import * as Yup from 'yup';
+
 const useCase = {
   name: "Use Cases",
+  description: "Let's figure out how to best tell potential clients about your product!",
+  validationSchema: Yup.object().shape({
+    "question-1": Yup.string().required('Required'),
+    "question-2": Yup.string().required('Required'),
+    "question-3": Yup.string().required('Required'),
+    "question-4": Yup.string().required('Required'),
+    "question-5": Yup.string().required('Required'),
+  }),
   questions: [
     {
       num: 1,
