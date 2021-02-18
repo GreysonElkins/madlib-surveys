@@ -10,6 +10,6 @@ On the branch `survey-builder`, I took a different approach. Formik also offers 
 
 While this branch successfully creates and offers users other surveys, it still highlights three areas for growth: 
   * When you `Finish` the survey's creation, there is plenty of opportunity for un-checked error - this was an issue of time
-  * While the madlib seems to be able to create errors, I don't believe they're actually validating. *how do we approach dynamically rendered `Fields` with validation?*
+  * While the `MadLibBuilder` seems to be able to create errors and provide validation for new fields, I don't believe they're actually validating. *how do we approach dynamically rendered `Fields` with validation?*
   * The survey's aren't actually takeable, which seems to be an issue with the `Schema`, but again, time didn't allow for further exploration.
 
