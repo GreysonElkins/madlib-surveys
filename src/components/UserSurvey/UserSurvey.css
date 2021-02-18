@@ -4,7 +4,7 @@
 }
 
 .UserSurvey {
-  margin: 3em auto;
+  margin: 1em auto;
   padding: 2em 0;
   width: 80%;
 }
@@ -27,8 +27,11 @@
   color: #FFFFFF;
 }
 
-h1 {
-  font-family: 'Roboto Slab', serif;
+h1, h3 {
   width: 100%;
   text-align: center;
+}
+
+h1 {
+  font-family: 'Roboto Slab', serif;
 }

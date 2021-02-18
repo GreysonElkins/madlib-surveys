@@ -1,6 +1,8 @@
 import { Field } from 'formik'
 
-const Question = ({ question, changeFn }) => {
+import './Question.css'
+
+const Question = ({ question, changeFn, errors, touched }) => {
   const questionName = `question-${question.num}`
 
   const printAnswerOptions = () => {
@@ -19,12 +21,13 @@ const Question = ({ question, changeFn }) => {
       field = <Field 
                 name={questionName} 
                 as="select"
+                className="answer-value"
                 > 
                 {printAnswerOptions()}
               </Field> 
-
     } else if (question.answerType === 'textarea') {
       field = <Field 
+        className="answer-value"
         name={questionName} 
         type="text"
         />
@@ -33,6 +36,9 @@ const Question = ({ question, changeFn }) => {
       <>
         <label htmlFor={questionName}>{question.question}</label>
         {field}
+        {errors[questionName] && touched[questionName] ? (
+          <div class="validation-error">{errors[questionName]}</div>
+        ) : null}
       </>
     )
   }

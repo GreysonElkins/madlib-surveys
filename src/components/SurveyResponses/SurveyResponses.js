@@ -21,7 +21,7 @@ const SurveyResponses = ({ currentAnswers }) => {
 
   return (
     <>
-      <h1>Responses:</h1>
+      <h1>Previous Responses:</h1>
       <div className="SurveyResponses">{showResponses()}</div>
     </>
   )

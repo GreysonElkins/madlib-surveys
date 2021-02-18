@@ -18,18 +18,20 @@ const UserSurvey = ({ survey, answerPreview }) => {
     return state
   }
 
-  const renderQuestions = () => {
+  const renderQuestions = (errors, touched) => {
     return survey.questions.map((question) => (
       <Question 
         question={question} 
         key={`Question-${question.num}`}
+        errors={errors}
+        touched={touched}
       />
     ))
   }
 
   const updateStoredResponses = () => {
     const responses = findStoredResponses()
-    responses.push({survey: answers, madlib: survey.madlib})
+    responses.unshift({survey: answers, madlib: survey.madlib})
     localStorage.setItem('responses', JSON.stringify(responses));
   }
   
@@ -45,22 +47,24 @@ const UserSurvey = ({ survey, answerPreview }) => {
   return (
     <>
     <h1>{survey.name}</h1>
+    <h3>{survey.description}</h3>
     <div className="UserSurvey">
       <Formik 
         initialValues={determineInitialFormState()}
+        validationSchema={survey.validationSchema}
         onSubmit={(values, { resetForm }) => {
           updateStoredResponses()
           resetForm()
         }}
         >
-        {({ values }) => (
+        {({ values, errors, touched }) => (
           <Form
           className="questions"
           onChange={
             setAnswers(values)
           }
           >
-            {renderQuestions()}
+            {renderQuestions(errors, touched)}
             <button type="submit">Submit</button>
           </Form>
         )}
