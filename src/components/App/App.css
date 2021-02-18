@@ -1,1 +1,13 @@
+* {
+  font-family: 'Montserrat', sans-serif;
+}
 
+button {
+  cursor: pointer;
+  font-size: 1.1em;
+  width: min-content;
+  border: none;
+  padding: .3em;
+  border-radius: 5px;
+  font-weight: bold;
+}
