@@ -4,13 +4,14 @@ import ParagraphPreview from '../ParagraphPreview'
 
 import './SurveyResponses.css'
 
-const SurveyResponses = () => {
+
+const SurveyResponses = ({ currentAnswers }) => {
   const [responses, setResponses] = useState([])
 
   useEffect(() => {
     const storedResponses = localStorage.getItem('responses')
     setResponses(JSON.parse(storedResponses))
-  }, [setResponses])
+  }, [setResponses, currentAnswers])
 
   const showResponses = () => {
     return responses.map(response => {

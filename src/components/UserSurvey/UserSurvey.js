@@ -72,7 +72,7 @@ const UserSurvey = ({ survey, answerPreview }) => {
     </div>
       {checkForResponses() &&
         // gotta rerender this on submit
-        <SurveyResponses />
+        <SurveyResponses currentAnswers={answers}/>
       }
       </>
   )
