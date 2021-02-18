@@ -1,12 +1,38 @@
 // import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react'
+import { Formik } from 'formik'
+
 import UserSurvey from '../UserSurvey'
+import SurveyBuilder from '../SurveyBuilder'
 import useCase from './example-survey'
 
+
 const App = () => {
+  const [currentPage, setCurrentPage] = useState('home')
+  // obviously this is getting into Router territory, 
+  // but I have other projects where I can demonstrate how I'd do this much better
+  // and more in depth
+  const determinePage = () => {
+    switch(currentPage) {
+      case 'build': 
+        return <SurveyBuilder />
+      default : 
+        return <UserSurvey survey={useCase} />
+    }
+  }
+
   return (
     <div className="App">
-      <UserSurvey survey={useCase} />
+      <header>
+        <button 
+          className='cta-1'
+          onClick={() => {setCurrentPage('build')}}
+        >
+          Create a Survey
+        </button>
+      </header>
+      {determinePage()}
     </div>
   );
 }

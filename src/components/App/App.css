@@ -10,9 +10,19 @@
 button {
   cursor: pointer;
   font-size: 1.1em;
-  width: min-content;
+  min-width: min-content;
   border: none;
   padding: .3em;
   border-radius: 5px;
   font-weight: bold;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+header > * {
+  margin: .5em;
 }
