@@ -86,6 +86,7 @@ const UserSurvey = ({ survey, answerPreview }) => {
           <Form
           className="questions"
           onSubmit={handleSubmit}
+            // I need to review this, you'll find on the other branch that I forgot about this later...
           >
             {renderQuestions(errors, touched)}
             {/* I would love to move the question buttons into it's own function, 
