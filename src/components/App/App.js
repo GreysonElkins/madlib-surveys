@@ -10,21 +10,52 @@ import useCase from './example-survey'
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('home')
-  // obviously this is getting into Router territory, 
+  const [otherSurvey, setOtherSurvey] = useState({})
+  // obviously this is getting into Router territory, and a touch of bad practice,
   // but I have other projects where I can demonstrate how I'd do this much better
   // and more in depth
   const determinePage = () => {
     switch(currentPage) {
-      case 'build': 
-        return <SurveyBuilder />
-      default : 
+      case 'home' :
         return <UserSurvey survey={useCase} />
+      case 'build': 
+        return <SurveyBuilder setPage={setCurrentPage} />
+      default : 
+        return <UserSurvey survey={otherSurvey} />
     }
+  }
+
+  const getSurveys = () => {
+    const surveys = JSON.parse(localStorage.getItem('surveys'))
+    if (surveys) {
+      return surveys
+    } else {
+      return []
+    }
+  }
+
+  const SurveyOptions = () => {
+    const surveys = getSurveys()
+    const buttons = surveys.map(survey => {
+      return (
+        <button 
+          className="cta-3" 
+          onClick={() => {
+            setOtherSurvey(survey)
+            setCurrentPage(survey.name)
+          }}
+        >
+          {survey.name}
+        </button>
+      )
+    })
+    return <div>{buttons}</div>
   }
 
   return (
     <div className="App">
       <header>
+        <SurveyOptions />
         <button 
           className='cta-1'
           onClick={() => {setCurrentPage('build')}}

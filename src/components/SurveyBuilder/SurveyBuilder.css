@@ -1,0 +1,14 @@
+.builder {
+  margin: auto auto;
+}
+
+.build-buttons {
+  display: flex;
+  width: 100%;
+  flex-direction: flex-end;
+}
+
+.mad-lib-box {
+  display: flex;
+  flex-direction: column;
+}

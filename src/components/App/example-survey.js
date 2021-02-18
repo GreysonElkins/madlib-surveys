@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 
 const useCase = {
+  id: 1,
   name: "Use Cases",
   description: "Let's figure out how to best tell potential clients about your product!",
   validationSchema: Yup.object().shape({

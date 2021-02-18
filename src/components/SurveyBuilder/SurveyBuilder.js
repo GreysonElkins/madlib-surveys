@@ -2,10 +2,19 @@ import { useState, useEffect, useContext } from 'react'
 import { Formik, Form, Field, useFormikContext, useField } from 'formik'
 import * as Yup from 'yup'
 
-const SurveyBuilder = () => {
+import Survey from './Survey'
+import './SurveyBuilder.css'
+
+const SurveyBuilder = ({ setPage }) => {
   const [questionCount, setQuestionCount] = useState(1)
-  
-  const initialValues = {name: ''}
+  const [initialValues, setInitialValues] = useState({
+    name: '', 
+    description: '',
+    questions: [],
+    madlib: []
+  })
+
+  // const initialValues = {name: ''}
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required('Required')
@@ -47,8 +56,27 @@ const SurveyBuilder = () => {
     
   const MadLibBuilder = () => {
     const [elementCount, setElementCount] = useState([])
-    const [questionsIndex, setQuestionsIndex] = useState([])
     const [madLib, setMadLib] = useState([])
+    const { errors, values, setValues } = useFormikContext()
+
+    const validateQuestions = (count) => {
+      if (!values.questions[count]) {
+        errors.questions = []
+        errors.questions[count] = 'Required'
+      }
+      return errors
+    }
+
+    const validateMadLib = (index) => {
+      if (!values.madlib[index]) {
+        errors.madlib = []
+        errors.madlib[index] = 'Required'
+      } 
+      // else if (values.madlib[index].length > 50) {
+      //   errors.madlib[index] = "That's too many characters"
+      // } 
+      return errors
+    }
 
     const addElement = (type) => {
       setElementCount(prevElement => [...prevElement, type])
@@ -58,15 +86,22 @@ const SurveyBuilder = () => {
     }
 
     const printElements = () => {
+      let questionCount = 0;
       return elementCount.map((elementType , i) => {
-        return (
-          <>
-            {elementType  === 'question' &&
-              <label htmlFor={`${elementType }-${i}`}>Prompt:</label>
-            }  
-            <Field name={`${elementType }-${i}`} type="text"/>
-          </>
-        )
+        if (elementType === 'question') {
+          questionCount++
+          values.madlib[i] = questionCount
+          return (
+            <>
+              <label htmlFor={`questions[${questionCount - 1}]`}>Prompt:</label>
+              <Field name={`questions[${questionCount - 1}]`} validate={validateQuestions(parseInt(values.questions.length))} type="text"/>
+            </>
+          )
+        } else {
+          return (
+            <Field name={`madlib[${parseInt(i)}]`} validate={validateMadLib(parseInt(i))} type="text"/>
+          )
+        }
       })
     }
 
@@ -87,19 +122,36 @@ const SurveyBuilder = () => {
             addTextField()
           }}
         >Blank</button>
-
-        {printElements()}
+        <div className="mad-lib-box">
+          {printElements()}
+        </div>
       </>
     )
   }
 
+  const storeSurvey = (survey) => {
+    let surveys = JSON.parse(localStorage.getItem('surveys'))
+    if (!surveys) surveys = []
+    surveys.push(survey)
+    localStorage.setItem(`surveys`, JSON.stringify(surveys))
+  }
+
   return (
-      <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
+    <Formik
+    initialValues={initialValues}
+    validationSchema={validationSchema}
     >
-      {({errors, touched}) => (
-        <Form className="questions">
+      {({values, errors, touched, resetForm}) => (
+        <Form 
+        className="questions builder"
+        onSubmit={(event) => {
+          event.preventDefault()
+          const finishedSurvey = new Survey(values)
+          storeSurvey(finishedSurvey)
+          resetForm()
+          setPage('home')
+          }}
+        >
         <div className={questionCount !== 1 ? 'hidden' : ''}>
           <div>Let's build your mad-lib style survey!</div>
           <label htmlFor="name">What would you like to call it? </label>
@@ -116,79 +168,14 @@ const SurveyBuilder = () => {
           <NextButton field="description" />
         </div>
         <div className={questionCount !== 3 ? 'hidden' : ''}>
-          <MadLibBuilder />
-          <NextButton field="madlib" />
+          <MadLibBuilder values={values}/>
+          {/* this moment has a ton of work needed with error handling */}
+          <button type="submit" className="cta-1">Finish</button>
         </div>
         </Form>
       )}
     </Formik>
-    )
+  )
 }
-  // const nameTheSurvey = () => (
-  //   <>
-  //     <div>We're going to build a mad-lib style survey!</div>
-  //     <Formik
-  //       initialValues={{name: ''}}
-  //       validationSchema={Yup.object().shape({
-  //         name: Yup.string()
-  //           .required('Required')
-  //           .max('20', 'Only 20 characters allowed')
-  //       })}
-  //       onSubmit={
-  //         (values) => {
-  //         newSurvey.name = values.name
-  //         const nextQuestion = questionCount + 1
-  //         setQuestionCount(nextQuestion)
-  //       }}
-  //     > 
-  //     {({ values, errors, touched }) => (
-  //       <Form className="questions">
-  //       <label for="name">What would you like to call it? </label>
-  //         <Field type="textarea" name="name" />
-  //         <button className="cta-2" type="submit">next</button>
-  //         {errors.name && touched.name ? (
-  //         <div className="validation-error">{errors.name}</div>
-  //       ) : null}
-  //       </Form>
-  //     )}
-  //     </Formik>
-  //   </>
-  // )
-
-  // const describeTheSurvey = () => (
-  //   <Formik
-  //       initialValues={{description: ''}}
-  //       validationSchema={Yup.object().shape({
-  //         description: Yup.string()
-  //           .required('The description is required')
-  //           .max('50', 'Only 50 characters allowed')
-  //       })}
-  //       onSubmit={
-  //         (values) => {
-  //         newSurvey.description = values.description
-  //         const nextQuestion = questionCount + 1
-  //         setQuestionCount(nextQuestion)
-  //       }}
-  //     > 
-  //     {({ values, errors, touched }) => (
-  //       <Form className="questions">
-  //       <label for="description">What's the goal of your madlib survey? </label>
-  //         <Field type="textarea" name="description" />
-  //         <button className="cta-2" type="submit">next</button>
-  //         {errors.description && touched.description ? (
-  //         <div className="validation-error">{errors.description}</div>
-  //       ) : null}
-  //       </Form>
-  //     )}
-  //     </Formik>
-  // )
-
-
-  // return determineQuestion()
- 
-  
-
-
-
 
 export default SurveyBuilder
