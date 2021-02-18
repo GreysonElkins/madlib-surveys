@@ -37,7 +37,7 @@ const Question = ({ question, changeFn, errors, touched }) => {
         <label htmlFor={questionName}>{question.question}</label>
         {field}
         {errors[questionName] && touched[questionName] ? (
-          <div class="validation-error">{errors[questionName]}</div>
+          <div className="validation-error">{errors[questionName]}</div>
         ) : null}
       </>
     )
