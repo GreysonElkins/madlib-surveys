@@ -14,8 +14,8 @@ const SurveyResponses = ({ currentAnswers }) => {
   }, [setResponses, currentAnswers])
 
   const showResponses = () => {
-    return responses.map(response => {
-      return <ParagraphPreview madlib={response.madlib} answers={response.survey}/>
+    return responses.map((response, i) => {
+      return <ParagraphPreview key={`response-${i}`} madlib={response.madlib} answers={response.survey}/>
     })
   }
 

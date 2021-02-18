@@ -60,9 +60,9 @@ const UserSurvey = ({ survey, answerPreview }) => {
         {({ values, errors, touched }) => (
           <Form
           className="questions"
-          onChange={
-            setAnswers(values)
-          }
+          // onChange={
+          //   setAnswers(values)
+          // }
           >
             {renderQuestions(errors, touched)}
             <button type="submit">Submit</button>
